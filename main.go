@@ -11,11 +11,11 @@ import (
 
 	"github.com/hashicorp/consul/api"
 
-	pb "testgrpc/MathService"
+	pb "github.com/ikenchina/bull/MathService"
 
 	"google.golang.org/grpc"
 
-	grpcclient "testsd/grpc/client"
+	grpcclient "github.com/ikenchina/bull/grpc/client"
 )
 
 type Client struct {
