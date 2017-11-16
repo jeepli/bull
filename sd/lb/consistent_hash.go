@@ -61,7 +61,7 @@ func (rr *consistentHash) updateEndpointers(endpointers []sd.Endpointers) error 
 			if e.Node() == nil || e.Node().Service == nil {
 				return ErrInvalidEndpointer
 			}
-			key := fmt.Sprintf("%d+%s", i, e.Node().Service.Address)
+			key := fmt.Sprintf("%d+%s:%d", i, e.Node().Service.Address, e.Node().Service.Port)
 			rr.hash.Add(key)
 			rr.eps[key] = e
 		}
