@@ -26,6 +26,7 @@ func NewConsistentHash(s sd.EndpointerHolder) (Balancer, error) {
 	if err != nil {
 		return nil, err
 	}
+	rr.updateEndpointers(endpointers)
 
 	err = s.RegisterEvent(rr.update)
 	if err != nil {
@@ -49,6 +50,12 @@ func (rr *consistentHash) update(ff sd.EndpointerEvent) error {
 		return err
 	}
 
+	rr.updateEndpointers(endpointers)
+
+	return nil
+}
+
+func (rr *consistentHash) updateEndpointers(endpointers []sd.Endpointers) error {
 	for _, ep := range endpointers {
 		for i, e := range ep {
 			if e.Node() == nil || e.Node().Service == nil {
@@ -59,7 +66,6 @@ func (rr *consistentHash) update(ff sd.EndpointerEvent) error {
 			rr.eps[key] = e
 		}
 	}
-
 	return nil
 }
 
