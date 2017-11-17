@@ -4,10 +4,11 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"github.com/ikenchina/bull/sd"
 	"time"
 
-	"github.com/go-kit/kit/endpoint"
+	"github.com/ikenchina/bull/sd"
+
+	"github.com/ikenchina/bull/endpoint"
 )
 
 // RetryError is an error wrapper that is used by the retry mechanism. All

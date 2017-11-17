@@ -70,7 +70,7 @@ func (c *Client) Build() error {
 
 func (c *Client) Add(a, b int32) (int32, error) {
 	retry := lb.Retry(4, 4*time.Second, c.balancer, "", func(ctx context.Context, request interface{}) (response interface{}, err error) {
-
+		fmt.Println(ctx.Value("client").(*RpcClient).Node().Service.Address, ctx.Value("client").(*RpcClient).Node().Service.Port)
 		xx, err := ctx.Value("client").(*RpcClient).Add(context.Background(), &pb.AddRequest{A: a, B: b}, grpc.FailFast(false))
 		return xx.GetX(), err
 

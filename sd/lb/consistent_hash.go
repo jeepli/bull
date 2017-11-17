@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/stathat/consistent"
+	"github.com/ikenchina/consistent"
 
 	"github.com/ikenchina/bull/sd"
 )
