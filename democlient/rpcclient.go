@@ -73,6 +73,7 @@ func (c *Client) Add(a, b int32) (int32, error) {
 		return xx.GetX(), err
 
 	})
+
 	ret, err := retry(context.Background(), nil)
 	if err != nil {
 		return 0, err
