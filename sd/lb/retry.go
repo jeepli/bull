@@ -43,7 +43,7 @@ type Callback func(n int, received error) (keepTrying bool, replacement error)
 // automatically load balanced via the load balancer. Requests that return
 // errors will be retried until they succeed, up to max times, or until the
 // timeout is elapsed, whichever comes first.
-func Retry(max int, timeout time.Duration, b Balancer, requestID string, ep sd.Endpoint) endpoint.Endpoint {
+func Retry(max int, timeout time.Duration, b Balancer, requestID string, ep endpoint.Endpoint) endpoint.Endpoint {
 	return RetryWithCallback(timeout, b, maxRetries(max), requestID, ep)
 }
 
@@ -63,7 +63,7 @@ func alwaysRetry(int, error) (keepTrying bool, replacement error) {
 // that return errors will be retried until they succeed, up to max times, until
 // the callback returns false, or until the timeout is elapsed, whichever comes
 // first.
-func RetryWithCallback(timeout time.Duration, b Balancer, cb Callback, requestID string, ep sd.Endpoint) endpoint.Endpoint {
+func RetryWithCallback(timeout time.Duration, b Balancer, cb Callback, requestID string, ep endpoint.Endpoint) endpoint.Endpoint {
 	if cb == nil {
 		cb = alwaysRetry
 	}

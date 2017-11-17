@@ -3,9 +3,8 @@ package circuitbreaker
 import (
 	"context"
 
+	"github.com/ikenchina/bull/endpoint"
 	"github.com/sony/gobreaker"
-
-	"github.com/go-kit/kit/endpoint"
 )
 
 // Gobreaker returns an endpoint.Middleware that implements the circuit

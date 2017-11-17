@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/ikenchina/bull/circuitbreaker"
+	"github.com/ikenchina/bull/endpoint"
 	"github.com/ikenchina/bull/sd"
 	"github.com/ikenchina/bull/sd/consul"
 	"github.com/ikenchina/bull/sd/lb"
@@ -16,6 +18,7 @@ import (
 	"google.golang.org/grpc"
 
 	grpcclient "github.com/ikenchina/bull/grpc/client"
+	"github.com/sony/gobreaker"
 )
 
 type Client struct {
@@ -86,6 +89,7 @@ func (c *Client) Add(a, b int32) (int32, error) {
 type RpcClient struct {
 	grpcclient.BaseRpcClient
 	pb.MathServiceClient
+	cb *gobreaker.CircuitBreaker
 }
 
 func NewRpcClient(node *sd.ServiceNode) (*RpcClient, error) {
@@ -95,10 +99,11 @@ func NewRpcClient(node *sd.ServiceNode) (*RpcClient, error) {
 		return nil, err
 	}
 	rr.MathServiceClient = pb.NewMathServiceClient(rr.Conn)
+	rr.cb = gobreaker.NewCircuitBreaker(gobreaker.Settings{})
 	return rr, nil
 }
 
-func (r *RpcClient) Exec(ep sd.Endpoint, ctx context.Context, req interface{}) (interface{}, error) {
+func (r *RpcClient) Exec(ep endpoint.Endpoint, ctx context.Context, req interface{}) (interface{}, error) {
 	ctx2 := context.WithValue(ctx, "client", r)
-	return ep(ctx2, req)
+	return circuitbreaker.Gobreaker(r.cb)(ep)(ctx2, req)
 }

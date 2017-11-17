@@ -2,13 +2,13 @@ package sd
 
 import (
 	"context"
-)
 
-type Endpoint func(ctx context.Context, request interface{}) (response interface{}, err error)
+	"github.com/ikenchina/bull/endpoint"
+)
 
 type Endpointer interface {
 	// execute entrance
-	Exec(ep Endpoint, ctx context.Context, req interface{}) (interface{}, error)
+	Exec(ep endpoint.Endpoint, ctx context.Context, req interface{}) (interface{}, error)
 	Close() error
 	Node() *ServiceNode
 }
